@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicUsageEnvironment", "BasicUsageEnvironment\BasicUsageEnvironment.vcxproj", "{2E7FA472-E3F0-4F71-ADEC-D5E5244A3015}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GroupSock", "groupsock\GroupSock.vcxproj", "{A80A11B2-1154-436F-AE51-2EFFD8C96A5D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LiveMedia", "liveMedia\LiveMedia.vcxproj", "{9D471554-9BF8-4257-BC71-55D5C44F82C9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UsageEnvironment", "UsageEnvironment\UsageEnvironment.vcxproj", "{E3E94103-C859-419C-961F-664DE7B45938}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{EBE97C8C-C623-431C-BE0A-F5DA8464E575}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestRTSPClient", "TestRTSPClient\TestRTSPClient.vcxproj", "{0D0761F3-5199-48EA-87E8-57C2104C6789}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E7FA472-E3F0-4F71-ADEC-D5E5244A3015}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2E7FA472-E3F0-4F71-ADEC-D5E5244A3015}.Debug|Win32.Build.0 = Debug|Win32
+		{2E7FA472-E3F0-4F71-ADEC-D5E5244A3015}.Release|Win32.ActiveCfg = Release|Win32
+		{2E7FA472-E3F0-4F71-ADEC-D5E5244A3015}.Release|Win32.Build.0 = Release|Win32
+		{A80A11B2-1154-436F-AE51-2EFFD8C96A5D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A80A11B2-1154-436F-AE51-2EFFD8C96A5D}.Debug|Win32.Build.0 = Debug|Win32
+		{A80A11B2-1154-436F-AE51-2EFFD8C96A5D}.Release|Win32.ActiveCfg = Release|Win32
+		{A80A11B2-1154-436F-AE51-2EFFD8C96A5D}.Release|Win32.Build.0 = Release|Win32
+		{9D471554-9BF8-4257-BC71-55D5C44F82C9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9D471554-9BF8-4257-BC71-55D5C44F82C9}.Debug|Win32.Build.0 = Debug|Win32
+		{9D471554-9BF8-4257-BC71-55D5C44F82C9}.Release|Win32.ActiveCfg = Release|Win32
+		{9D471554-9BF8-4257-BC71-55D5C44F82C9}.Release|Win32.Build.0 = Release|Win32
+		{E3E94103-C859-419C-961F-664DE7B45938}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E3E94103-C859-419C-961F-664DE7B45938}.Debug|Win32.Build.0 = Debug|Win32
+		{E3E94103-C859-419C-961F-664DE7B45938}.Release|Win32.ActiveCfg = Release|Win32
+		{E3E94103-C859-419C-961F-664DE7B45938}.Release|Win32.Build.0 = Release|Win32
+		{0D0761F3-5199-48EA-87E8-57C2104C6789}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0D0761F3-5199-48EA-87E8-57C2104C6789}.Debug|Win32.Build.0 = Debug|Win32
+		{0D0761F3-5199-48EA-87E8-57C2104C6789}.Release|Win32.ActiveCfg = Release|Win32
+		{0D0761F3-5199-48EA-87E8-57C2104C6789}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2E7FA472-E3F0-4F71-ADEC-D5E5244A3015} = {EBE97C8C-C623-431C-BE0A-F5DA8464E575}
+		{A80A11B2-1154-436F-AE51-2EFFD8C96A5D} = {EBE97C8C-C623-431C-BE0A-F5DA8464E575}
+		{9D471554-9BF8-4257-BC71-55D5C44F82C9} = {EBE97C8C-C623-431C-BE0A-F5DA8464E575}
+		{E3E94103-C859-419C-961F-664DE7B45938} = {EBE97C8C-C623-431C-BE0A-F5DA8464E575}
+	EndGlobalSection
+EndGlobal
