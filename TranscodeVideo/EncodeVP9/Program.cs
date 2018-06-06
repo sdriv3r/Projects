@@ -11,7 +11,7 @@ namespace EncodeVP9
 
     class Program
     {
-        static string MainDir = "D:\\TV";
+        static string MainDir = "X:\\TV";
 
         static string FinalExtention = ".mkv";
 
@@ -99,6 +99,11 @@ namespace EncodeVP9
                             break;
                         }
                     }
+                }
+
+                if (ffmpegList.Count == 0)
+                {
+                    return;
                 }
 
                 foreach( Tuple<Process, string> pair in ffmpegList)
