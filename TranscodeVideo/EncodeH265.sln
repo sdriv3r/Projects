@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncodeH265", "EncodeH265\En
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncodeVP9", "EncodeVP9\EncodeVP9.csproj", "{3DDBBFE1-CE91-4A50-8227-FCACD0682002}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoSorter", "VideoSorter\VideoSorter.csproj", "{44D5DF29-F271-44CE-A32E-9D6FFDF7C3CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3DDBBFE1-CE91-4A50-8227-FCACD0682002}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DDBBFE1-CE91-4A50-8227-FCACD0682002}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DDBBFE1-CE91-4A50-8227-FCACD0682002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44D5DF29-F271-44CE-A32E-9D6FFDF7C3CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44D5DF29-F271-44CE-A32E-9D6FFDF7C3CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44D5DF29-F271-44CE-A32E-9D6FFDF7C3CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44D5DF29-F271-44CE-A32E-9D6FFDF7C3CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

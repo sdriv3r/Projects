@@ -4,13 +4,14 @@
 * Created: 2018-01-28 5:07:27 PM
 * Author : Fluffy
 */
+#define F_CPU 1000000UL
 
 #include <avr/io.h>
 #include <util/delay.h>
 #include "I2C_LCD.h"
 #include <avr/interrupt.h>
 
-#define F_CPU 1000000UL
+
 
 void Temp_Init();
 void Timer0Init();
@@ -76,6 +77,7 @@ int main(void)
 			LCD_SetCursor(11);
 			LCD_Display('O');
 			LCD_Display('N');
+			LCD_Display(' ');
 			PORTD = 0x01;
 		}
 		if ((PORTD == 0x01) & (temp < (setTemp - 5)))

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PriceMe": {
+      "commandName": "Project",
+      "commandLineArgs": "Rona 00336095"
+    }
+  }
+}

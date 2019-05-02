@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Diagnostics;
 using System.IO;
 
@@ -21,7 +21,13 @@ namespace EncodeVP9
 
         static int Par = 1;
 
-        static List<Tuple<Process, string>> ffmpegList = new List<Tuple<Process, string>>();
+        static Dictionary<Process, string> ffmpegList = new Dictionary<Process, string>();
+
+        static List<string> sAllFiles;
+
+        static int iEncodeCount = 0;
+
+        static AutoResetEvent exitEvent = new AutoResetEvent(false);
 
         static string[] FileFormats =
         {
@@ -50,10 +56,6 @@ namespace EncodeVP9
                         FinalExtention = args[i + 1];
                         break;
 
-                    case "-freeze":
-                        Freeze = true;
-                        break;
-
                     case "-n":
                         Numb = Convert.ToInt32(args[i + 1]);
                         break;
@@ -72,79 +74,63 @@ namespace EncodeVP9
                         Console.WriteLine("-extout  Extention of the converted file. Default: .mkv");
                         Console.WriteLine("-dest    Where to put converted file. Default: D:\\Finished Torrents\\");
                         Console.WriteLine("-p       Number of clips to convert at the same time");
-                        Console.WriteLine("-n       Number cycles to run");
+                        Console.WriteLine("-n       Number encodes to do");
                         return;
                 }
             }
-            for (int i = 0; i < Numb; ++i)
+
+            sAllFiles = FindVideos();
+
+            var sAllFiles_copy = new List<string>(sAllFiles);
+            foreach (string file in sAllFiles_copy)
             {
-                var sAllFiles = FindVideos();
+                string comment = GetComment(file);
 
-                foreach (string file in sAllFiles)
+                FileInfo fileInfo = new FileInfo(file);
+
+                if (comment != "Encoded Kutayz V2\r\n")
                 {
-                    string comment = GetComment(file);
+                    var process = new Process();
+                    ffmpegList.Add(process, file);
+                    process.StartInfo = new ProcessStartInfo("ffmpeg.exe");
+                    process.StartInfo.UseShellExecute = false;
+                    //process.StartInfo.RedirectStandardOutput = true;
+                    //process.StartInfo.RedirectStandardError = true;
+                    process.EnableRaisingEvents = true;
+                    process.Exited += new EventHandler(ffmpeg_exit);
 
-                    FileInfo fileInfo = new FileInfo(file);
+                    EncodeVideo(process, file);
 
-                    if (comment != "Encoded Kutayz V2\r\n")
+                    Console.WriteLine("Starting Encode for " + file);
+
+                    iEncodeCount++;
+
+                    if (iEncodeCount >= Numb)
                     {
-                        ffmpegList.Add(new Tuple<Process, string>(new Process(), file));
-                        ffmpegList[ffmpegList.Count - 1].Item1.StartInfo = new ProcessStartInfo("ffmpeg.exe");
-                        ffmpegList[ffmpegList.Count - 1].Item1.StartInfo.UseShellExecute = false;
-
-                        EncodeVideo(ffmpegList[ffmpegList.Count - 1].Item1, ffmpegList[ffmpegList.Count - 1].Item2);
-
-                        if (ffmpegList.Count == Par)
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
 
-                if (ffmpegList.Count == 0)
+                sAllFiles.Remove(file);
+
+                if (ffmpegList.Count == Par)
                 {
-                    return;
-                }
-
-                foreach( Tuple<Process, string> pair in ffmpegList)
-                {
-                    pair.Item1.WaitForExit();
-                    File.Delete(pair.Item2);
-
-                    string filename = string.Empty;
-                    var filenamearray = pair.Item2.Split(new Char[] { '.' });
-
-                    for (int j = 0; j < filenamearray.Length - 1; ++j)
-                    {
-                        if (j > 0)
-                        {
-                            filename += ".";
-                        }
-
-                        filename += filenamearray[j];
-                    }
-
-                    File.Move(filename + "+++encoding+++" + FinalExtention, filename + FinalExtention);
-                }
-
-                ffmpegList.Clear();
-
-                if (Freeze)
-                {
-                    Console.ReadLine();
+                    break;
                 }
             }
+
+            exitEvent.WaitOne();
+
         }
 
-        static string[] FindVideos()
+        static List<string> FindVideos()
         {
-            string[] sAllFiles = { };
+            List<string> sAllFiles = new List<string>();
             foreach (string extention in FileFormats)
             {
                 string[] sArrayTmp = Directory.GetFiles(MainDir, extention, SearchOption.AllDirectories);
-                int sAllFilesLenght = sAllFiles.Length;
-                Array.Resize<string>(ref sAllFiles, sAllFilesLenght + sArrayTmp.Length);
-                Array.Copy(sArrayTmp, 0, sAllFiles, sAllFilesLenght, sArrayTmp.Length);
+                int sAllFilesLenght = sAllFiles.Count;
+                sAllFiles.AddRange(sArrayTmp);
             }
             return sAllFiles;
         }
@@ -183,7 +169,7 @@ namespace EncodeVP9
 
             var newfilearray = file.Split(new Char[] { '.' });
 
-            for (int i = 0; i < newfilearray.Length-1; ++i)
+            for (int i = 0; i < newfilearray.Length - 1; ++i)
             {
                 if (i > 0)
                 {
@@ -193,7 +179,7 @@ namespace EncodeVP9
                 newfile += newfilearray[i];
             }
 
-           newfile += "+++encoding+++" + FinalExtention;
+            newfile += "+++encoding+++" + FinalExtention;
 
             ffmpeg.StartInfo.Arguments = "-i \"" + file + "\" -c:v libvpx-vp9 -crf 30 -b:v 0 -g 360 -c:a libvorbis -q:a 4.0 -sn -metadata comment=\"Encoded Kutayz V2\" " + "\"" + newfile + "\"";
 
@@ -206,6 +192,71 @@ namespace EncodeVP9
                 Console.WriteLine("Unable to start ffmpeg. Press any key to close.");
                 Console.ReadLine();
                 Environment.Exit(0);
+            }
+        }
+
+        static void ffmpeg_exit(object sender, System.EventArgs e)
+        {
+            Process process = sender as Process;
+            File.Delete(ffmpegList[process]);
+
+            string filename = string.Empty;
+            var filenamearray = ffmpegList[process].Split(new Char[] { '.' });
+
+            for (int j = 0; j < filenamearray.Length - 1; ++j)
+            {
+                if (j > 0)
+                {
+                    filename += ".";
+                }
+
+                filename += filenamearray[j];
+            }
+
+            File.Move(filename + "+++encoding+++" + FinalExtention, filename + FinalExtention);
+            ffmpegList.Remove(process);
+
+            Console.WriteLine("Finished encoding " + filename);
+
+            if (iEncodeCount >= Numb)
+            {
+                if (ffmpegList.Count == 0)
+                {
+                    exitEvent.Set();
+                }
+                return;
+            }
+
+            var sAllFiles_copy = new List<string>(sAllFiles);
+            foreach (string file in sAllFiles_copy)
+            {
+                string comment = GetComment(file);
+
+                FileInfo fileInfo = new FileInfo(file);
+
+                if (comment != "Encoded Kutayz V2\r\n")
+                {
+                    process = new Process();
+                    ffmpegList.Add(process, file);
+                    process.StartInfo = new ProcessStartInfo("ffmpeg.exe");
+                    process.StartInfo.UseShellExecute = false;
+                    //process.StartInfo.RedirectStandardOutput = true;
+                    //process.StartInfo.RedirectStandardError = true;
+                    process.EnableRaisingEvents = true;
+                    process.Exited += new EventHandler(ffmpeg_exit);
+
+                    EncodeVideo(process, file);
+
+                    iEncodeCount++;
+
+                    Console.WriteLine("Starting Encode for " + file);
+
+                    sAllFiles.Remove(file);
+
+                    break;
+                }
+
+                sAllFiles.Remove(file);
             }
         }
     }
